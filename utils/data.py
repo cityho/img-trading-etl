@@ -37,3 +37,7 @@ def img_upload_to_s3(img_path, s3_path):
     # s3 upload_file bucket name: dfmba-img-trading, s3_path: img_w_ma/
     S3.upload_file(img_path, 'dfmba-img-trading', s3_path)
     os.remove(img_path)
+
+
+def file_upload_to_s3(file_path, s3_path):
+    S3.upload_file(file_path, 'dfmba-img-trading', s3_path)
