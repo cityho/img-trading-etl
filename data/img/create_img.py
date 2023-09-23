@@ -81,7 +81,7 @@ def run(args):
             stocks = daily_df.index.get_level_values(0).unique()
 
             if args.thread:
-                with ThreadPoolExecutor(max_workers=4) as executor:
+                with ThreadPoolExecutor(max_workers=10) as executor:
                     for stock_code in stocks:
                         executor.submit(data_to_img, daily_df, stock_code, True, m, d)
             else:
