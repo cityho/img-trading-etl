@@ -9,11 +9,11 @@ def run():
     )
     
     drive_service = build('drive', 'v3', credentials=credentials)
-    local_file_path = '/locdisk/data/hoseung2/scenario/jongga_tomorrow_ma_only_krx.h5'
+    local_file_path = '/locdisk/data/hoseung2/img/compresstogdrive.tar.gz'
     
     file_metadata = {
-        'name': 'jongga_tomorrow_ma_only_krx.h5',
-        'parents': ['1HosbxhBm4uGrPHvfP9iePJFnWisoaVUC']
+        'name': 'market_total.tar.gz',
+        'parents': ['']
     }
     
     media = MediaFileUpload(local_file_path, mimetype='text/plain')

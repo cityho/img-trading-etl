@@ -28,7 +28,7 @@ def img_to_dataset(setting):
         batch_size=batch_size,
         class_mode=class_mode,
         subset='training',
-        shuffle=False,
+        shuffle=True,
         # seed=42
     )
 
@@ -38,7 +38,7 @@ def img_to_dataset(setting):
         batch_size=batch_size,
         class_mode=class_mode,
         subset='validation',
-        shuffle=False
+        shuffle=True
     )
 
     return train_generator, validation_generator
@@ -79,25 +79,7 @@ def store_dataset_to_hdf(
 
     LOGGER.info(f"END file making: {train_file}")
 
-    # test_file = file_name.replace(".h5", "_test.h5")
-    # LOGGER.info(f"START file making: {test_file}")
-    # with h5py.File(test_file, 'w') as file:
-    #     x_val = np.concatenate(
-    #         [
-    #             validation_generator.next()[0] for _ in range(len(validation_generator))
-    #         ], axis=0
-    #     )
-    #     y_val = np.concatenate(
-    #         [
-    #             validation_generator.next()[1] for _ in range(len(validation_generator))
-    #         ], axis=0
-    #     )
-    #     file.create_dataset('x_test', data=x_val)
-    #     file.create_dataset('y_test', data=y_val)
-
-    # LOGGER.info(f"END file making: {test_file}")
-    file_upload_to_s3(train_file, train_file)
-    # file_upload_to_s3(test_file, test_file)
+    file_upload_to_s3(train_file, train_file.replace("/locdisk/data/hoseung2/", ""))
     LOGGER.info(f"FILE UPLOADED ON S3")
 
 
