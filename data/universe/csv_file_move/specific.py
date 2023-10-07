@@ -20,21 +20,17 @@ CSVS = list(BASE_DATA_PATH.rglob(f'*{FTYPE}'))
 TOTAL_DATA = list()
 
 sceanrio, folder_name, sceanrio_idx = None, None, None
-a = 0
 
 
 # 유니버스 별로 파일을 날짜별로 만드는 과정
 def store_data(f, stocks):
     global TOTAL_DATA
-    global a
-    a += 1
     data = pd.read_csv(f, index_col=0).set_index("date")
 
     tmp = data[
         data.stock_code.isin(stocks)
     ]
     TOTAL_DATA.append(tmp)
-    print(f"a: {a}, data: {len(TOTAL_DATA)}")
 
 
 def run(stocks):
@@ -46,9 +42,8 @@ def run(stocks):
     for i in tqdm(range(len(CSVS)), desc="파일 이동 진행 중"):
         store_data(CSVS[i], stocks)
 
-
     f_name = "_".join(stocks)
-    pd.concat(TOTAL_DATA).to_csv(folder_name + "/" + f_name + FTYPE)
+    pd.concat(TOTAL_DATA).to_csv(folder_name + f_name + FTYPE)
 
 
 if __name__ == '__main__':
