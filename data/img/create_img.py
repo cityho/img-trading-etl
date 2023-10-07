@@ -51,6 +51,11 @@ def data_to_img(
     if not os.path.exists(folder):
         os.makedirs(folder)
 
+    f_name = folder+f"{stock_code}.png"
+    if os.path.exists(f_name):
+        return
+
+
     mpf.plot(
         tmp,
         type='candle',
@@ -59,7 +64,7 @@ def data_to_img(
         scale_padding={'left': 0, 'top': 0, 'right': 0, 'bottom': 0},
         style='yahoo',
         savefig=dict(
-            fname=folder+f"{d}_{stock_code}.png",
+            fname=f_name,
         ),
         figsize=(4, 2),
         axisoff=True,  # 사이즈 및 여백 조절
@@ -81,7 +86,7 @@ def run(args):
             stocks = daily_df.index.get_level_values(0).unique()
 
             if args.thread:
-                with ThreadPoolExecutor(max_workers=10) as executor:
+                with ThreadPoolExecutor(max_workers=4) as executor:
                     for stock_code in stocks:
                         executor.submit(data_to_img, daily_df, stock_code, True, m, d)
             else:

@@ -1,0 +1,1 @@
+RESULT_PATH = "/locdisk/data/hoseung2/universe/"
