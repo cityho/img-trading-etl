@@ -11,6 +11,7 @@ def get_img_size(image_path):
 
     except Exception as e:
         print(f"이미지를 열 수 없거나 에러가 발생했습니다: {e}")
+
     return {"width":width, "height": height}
 
 

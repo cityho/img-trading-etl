@@ -1,4 +1,4 @@
-from data.universe.generator import run
+from data.universe.img_file_move.generator import run
 
 if __name__ == '__main__':
     setting = dict(
