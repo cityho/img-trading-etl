@@ -51,11 +51,10 @@ def data_to_img(
     if not os.path.exists(folder):
         os.makedirs(folder)
 
-    f_name = folder+f"{stock_code}.png"
+    f_name = folder+f"/{stock_code}.png"
     if os.path.exists(f_name):
         return
-
-
+    print(f_name)
     mpf.plot(
         tmp,
         type='candle',

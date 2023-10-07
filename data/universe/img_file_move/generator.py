@@ -16,7 +16,7 @@ from data.universe.config import RESULT_PATH
 
 # ImageDataGenerator 에 들어갈 파일들을 폴더 구조 별로 mv 하는 코드
 
-BASE_IMG_PATH = Path("/locdisk/data/hoseung2/img/img_w_ma/kospi")
+BASE_IMG_PATH = Path("/locdisk/data/hoseung2/img/img_w_ma")
 PNGS = list(BASE_IMG_PATH.rglob('*.png'))
 sceanrio, folder_name, sceanrio_idx = None, None, None
 
