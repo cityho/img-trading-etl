@@ -27,5 +27,5 @@ def parse_args() -> argparse.Namespace:
 
     parser.add_argument("--market", default=["kosdaq", "kospi"], type=str, nargs="+")
     parser.add_argument("--thread", default=False, action="store_true")
-
+    parser.add_argument("--stock_code", default=False, type=str, nargs="+")
     return parser.parse_args()

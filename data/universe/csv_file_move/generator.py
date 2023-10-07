@@ -1,5 +1,7 @@
 """
-당일의 True, False 를 기반으로 csv를 concat한다..
+당일의 True, False 를 기반으로 csv를 만든다... 일자별 그 유니버스에 해당하는 종목들의 csv 파일을 생성
+특정 종목만 추출한다.
+특정 종목의 전 기간에 대해 합친 하나의 csv 파일을 만든다!
 """
 from datetime import datetime
 
@@ -14,10 +16,9 @@ from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor
 from data.universe.config import RESULT_PATH
 
-# ImageDataGenerator 에 들어갈 파일들을 폴더 구조 별로 mv 하는 코드
 
 FTYPE = ".csv"
-BASE_DATA_PATH = Path("/locdisk/data/hoseung2/price_volume_w_index/kospi")
+BASE_DATA_PATH = Path("/locdisk/data/hoseung2/price_volume_w_index")
 CSVS = list(BASE_DATA_PATH.rglob(f'*{FTYPE}'))
 
 sceanrio, folder_name, sceanrio_idx = None, None, None
