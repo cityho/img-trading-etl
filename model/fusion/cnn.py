@@ -11,7 +11,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras import layers
 from tensorflow.keras.layers import Input, LSTM, Conv2D, MaxPooling2D, Flatten, Dense, Concatenate
 
-from model.util import img_to_dataset
+from model.util import img_to_dataset, store_checkpoints
 
 
 def set_model():
@@ -62,26 +62,33 @@ def set_model():
 
 
 def run_model(sceanrio):
+    batch_size = 300
     train_gen, val_gen, test_gen = img_to_dataset(
         f"/locdisk/data/hoseung2/scenario/{sceanrio}/img/train",
         f"/locdisk/data/hoseung2/scenario/{sceanrio}/img/test",
-        batch_size=300,
+        batch_size=batch_size,
         image_size=(400, 200),
         num_classes=3
     )
     model = set_model()
+    checkpoint_path = "/locdisk/data/hoseung2/model/%s_cnn/cp-{epoch:04d}.ckpt" % (sceanrio)
+    cp_callback = store_checkpoints(checkpoint_path, batch_size)
+    model.save_weights(checkpoint_path.format(epoch=0))
+
     history = model.fit(
         train_gen,
         validation_data=val_gen,
+        callbacks=[cp_callback],
         steps_per_epoch=len(train_gen),
         epochs=40
     )
+    model.save(f"/locdisk/data/hoseung2/model/{sceanrio}_cnn.h5")
 
     loss, accuracy, recall = model.evaluate(test_gen)
     print(f"Test loss: {loss:.4f}")
     print(f"Test accuracy: {accuracy:.4f}")
     print(f"Test recall: {recall:.4f}")
-    model.save(f"/locdisk/data/hoseung2/model/{sceanrio}_cnn.h5")
+
     model.summary()
 
     tf.keras.utils.plot_model(model, show_shapes=True)

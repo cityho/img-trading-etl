@@ -1,5 +1,15 @@
+from tensorflow.keras.callbacks import ModelCheckpoint
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
+
+def store_checkpoints(checkpoint_path, batch_size):
+    cp_callback = ModelCheckpoint(
+        filepath=checkpoint_path,
+        verbose=1,
+        save_weights_only=True,
+        save_freq=5 * batch_size
+    )
+    return cp_callback
 
 def img_to_dataset(
     train_path, test_path, batch_size, image_size, num_classes
