@@ -23,7 +23,7 @@ def img_to_dataset(setting):
 
     class_mode = 'binary' if num_classes == 2 else 'categorical'
     train_generator = datagen.flow_from_directory(
-        data_dir,
+        data_dir+"train",
         target_size=image_size,
         batch_size=batch_size,
         class_mode=class_mode,
@@ -33,7 +33,7 @@ def img_to_dataset(setting):
     )
 
     validation_generator = datagen.flow_from_directory(
-        data_dir,
+        data_dir+"test",
         target_size=image_size,
         batch_size=batch_size,
         class_mode=class_mode,
@@ -51,7 +51,7 @@ def store_dataset_to_hdf(
     LOGGER.info(f"START file making: {file_name}")
     train_file = file_name #.replace(".h5", "_train.h5")
 
-    train_iter = 100
+    train_iter = 5
     val_rate = 0.2
     val_iter = int(train_iter * val_rate)
     with h5py.File(train_file, 'w') as file:
@@ -89,3 +89,14 @@ def run(setting):
     store_dataset_to_hdf(
         setting["file_name"], train_generator, validation_generator
     )
+
+
+if __name__ == '__main__':
+    setting = {
+        "data_dir": "/locdisk/data/hoseung2/scenario/jongga_tomorrow_trenary_kospi200_constituent/img/",
+        "img_size": (400, 200),
+        "file_name": "/locdisk/data/hoseung2/scenario/small_jongga_tomorrow_trenary_kospi200_constituent.h5",
+        "batch_size": 100,
+        "class_num": 3
+    }
+    run(setting)

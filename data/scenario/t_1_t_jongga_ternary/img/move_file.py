@@ -92,9 +92,6 @@ def run(setting):
             executor.submit(files_cp_to_folder, PNGS[i])
 
 
-"""
-todo : 데이터 생성 속도가 느려서 일단 코스피만 있음!!! (총 14만장)
-"""
 if __name__ == '__main__':
     setting = dict(
         scenario="/locdisk/data/hoseung2/scenario/jongga_tomorrow_trenary.csv",

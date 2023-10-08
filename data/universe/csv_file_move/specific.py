@@ -12,6 +12,7 @@ from tqdm import tqdm
 
 from data.universe.config import RESULT_PATH
 from utils.args import parse_args
+from concurrent.futures import ThreadPoolExecutor
 
 
 FTYPE = ".csv"
@@ -26,11 +27,12 @@ sceanrio, folder_name, sceanrio_idx = None, None, None
 def store_data(f, stocks):
     global TOTAL_DATA
     data = pd.read_csv(f, index_col=0).set_index("date")
-
     tmp = data[
         data.stock_code.isin(stocks)
     ]
-    TOTAL_DATA.append(tmp)
+    d = f.name.replace(FTYPE, "").split("_")[-1]
+    f_name = "_".join(stocks) + "_" + d
+    tmp.to_csv(folder_name + f_name + FTYPE)
 
 
 def run(stocks):
@@ -39,13 +41,12 @@ def run(stocks):
     os.makedirs(folder_name, exist_ok=True)
 
     # global 변수를 쓰기 때문에 여기서는 그냥 스레드로 진행 구다사이
-    for i in tqdm(range(len(CSVS)), desc="파일 이동 진행 중"):
-        store_data(CSVS[i], stocks)
 
-    f_name = "_".join(stocks)
-    pd.concat(TOTAL_DATA).to_csv(folder_name + f_name + FTYPE)
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        for i in tqdm(range(len(CSVS)), desc="파일 이동 진행 중"):
+            executor.submit(store_data, CSVS[i], stocks)
 
 
 if __name__ == '__main__':
     args = parse_args()
-    run(args.stock_code)
+    run(["A030530"])
