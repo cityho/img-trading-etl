@@ -82,12 +82,14 @@ def run_model(sceanrio):
         steps_per_epoch=len(train_gen),
         epochs=40
     )
+    model.save_weights(checkpoint_path.format(epoch=40))
     model.save(f"/locdisk/data/hoseung2/model/{sceanrio}_cnn.h5")
-
-    loss, accuracy, recall = model.evaluate(test_gen)
+    model.save_weights(checkpoint_path.format(epoch=0))
+    loss, accuracy, recall, precision = model.evaluate(test_gen)
     print(f"Test loss: {loss:.4f}")
     print(f"Test accuracy: {accuracy:.4f}")
     print(f"Test recall: {recall:.4f}")
+    print(f"Test precision: {precision:.4f}")
 
     model.summary()
 
@@ -97,18 +99,7 @@ def run_model(sceanrio):
     plt.plot(history.history["val_loss"])
     plt.xlabel("epoch")
     plt.ylabel("loss")
-    plt.title(f"{sceanrio}" )
+    plt.title(f"{sceanrio}")
+    plt.legend()
     plt.show()
-
-
-if __name__ == '__main__':
-    sceanrio = "jongga_tomorrow_trenary_kospi200_constituent"
-    run_model(
-        sceanrio
-    )
-
-"""
-Found 7419 images belonging to 3 classes.
-Found 1853 images belonging to 3 classes.
-Found 385 images belonging to 3 classes.
-"""
+    plt.savefig(f"/locdisk/data/hoseung2/model/{sceanrio}_cnn.h5.png")

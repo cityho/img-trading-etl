@@ -45,7 +45,11 @@ def run(setting):
     global sceanrio
     sceanrio = pd.read_csv(
         setting["scenario"]
-    ).set_index("FILE DATE", drop=True)
+    )
+    try:
+        sceanrio.set_index("FILE DATE", drop=True, inplace=True)
+    except KeyError:
+        sceanrio.set_index("Unnamed: 0", drop=True, inplace=True)
     sceanrio = sceanrio.isna()
 
     global folder_name

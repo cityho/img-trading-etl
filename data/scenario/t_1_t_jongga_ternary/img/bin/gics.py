@@ -37,6 +37,9 @@ def files_cp_to_folder(f):
         dest = int(sceanrio.at[bef_tmp_idx_dash, tmp_col])
     except KeyError:
         return
+    except ValueError:
+        return
+
     try:
         if data_count > 0.8*total_data:
             shutil.copy(
@@ -50,9 +53,6 @@ def files_cp_to_folder(f):
             )
             data_count += 1
     except:
-        print("Error", f, dest)
-        # import traceback
-        # print(traceback.format_exc())
         return
 
 
@@ -60,6 +60,7 @@ def run(setting):
     global BASE_IMG_PATH
     global PNGS
     global total_data
+    global data_count
     global sceanrio
     global sceanrio_idx
 
@@ -82,11 +83,47 @@ def run(setting):
     for l in folders.values():
         os.makedirs(l, exist_ok=True)
         print(l)
+    print("data_count: ", data_count)
+    for i in tqdm(range(len(PNGS)), desc="파일 이동 진행 중"):
+        files_cp_to_folder(PNGS[i])
 
-    # for i in tqdm(range(len(PNGS)), desc="파일 이동 진행 중"):
-    #     files_cp_to_folder(PNGS[i])
+    # with ThreadPoolExecutor(max_workers=4) as executor:
+    #     for i in tqdm(range(len(PNGS)), desc="파일 이동 진행 중"):
+    #         executor.submit(files_cp_to_folder, PNGS[i])
 
-    with ThreadPoolExecutor(max_workers=4) as executor:
-        for i in tqdm(range(len(PNGS)), desc="파일 이동 진행 중"):
-            executor.submit(files_cp_to_folder, PNGS[i])
 
+if __name__ == '__main__':
+    IDX_CODE_NAME = {
+        "4520": "Technology Hardware & Equipment",
+        "1510": "Materials",
+        "5020": "Media & Entertainment",
+        "2510": "Automobiles & Components",
+        "4010": "Banks",
+        "3520": "Pharmaceuticals, Biotechnology & Life Sciences",
+        "2010": "Capital Goods",
+        "2520": "Consumer Durables & Apparel",
+        "3020": "Food, Beverage & Tobacco",
+        "1010": "Energy",
+        "5010": "Telecommunication Services",
+        "3030": "Household & Personal Products",
+        "4030": "Insurance",
+        "5510": "Utilities",
+        "2030": "Transportation",
+        "4510": "Software & Services",
+        "2530": "Consumer Services",
+        "2550": "Retailing",
+        "4020": "Diversified Financials",
+        "3010": "Food & Staples Retailing",
+        "2020": "Commercial & Professional Services",
+        "3510": "Health Care Equipment & Services",
+        "6010,6020": "Real Estate",
+        "4530": "Semiconductors & Semiconductor Equipment",
+    }
+    for g in IDX_CODE_NAME.keys():
+        data_count = 0
+        setting = dict(
+            scenario="/locdisk/data/hoseung2/scenario/jongga_tomorrow_trenary.csv",
+            universe=f"/locdisk/data/hoseung2/universe/gics_{g}/img",
+            label=[0, 1, 2]
+        )
+        run(setting)
