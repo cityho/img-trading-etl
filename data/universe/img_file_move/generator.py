@@ -50,8 +50,8 @@ def run(setting):
         sceanrio.set_index("FILE DATE", drop=True, inplace=True)
     except KeyError:
         sceanrio.set_index("Unnamed: 0", drop=True, inplace=True)
-    sceanrio = sceanrio.isna()
-
+    sceanrio = ~sceanrio.isna()
+    # todo: 아 이거 잘못해가지구 고쳐야해~~
     global folder_name
     folder_name = setting["scenario"].replace(".csv", "").replace("/home/hoseung2/", RESULT_PATH) +"/img"
     os.makedirs(folder_name, exist_ok=True)

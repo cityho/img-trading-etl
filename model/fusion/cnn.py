@@ -62,7 +62,7 @@ def set_model():
 
 
 def run_model(sceanrio):
-    batch_size = 300
+    batch_size = 250
     train_gen, val_gen, test_gen = img_to_dataset(
         f"/locdisk/data/hoseung2/scenario/{sceanrio}/img/train",
         f"/locdisk/data/hoseung2/scenario/{sceanrio}/img/test",
@@ -80,9 +80,9 @@ def run_model(sceanrio):
         validation_data=val_gen,
         callbacks=[cp_callback],
         steps_per_epoch=len(train_gen),
-        epochs=40
+        epochs=30
     )
-    model.save_weights(checkpoint_path.format(epoch=40))
+    model.save_weights(checkpoint_path.format(epoch=30))
     model.save(f"/locdisk/data/hoseung2/model/{sceanrio}_cnn.h5")
     model.save_weights(checkpoint_path.format(epoch=0))
     loss, accuracy, recall, precision = model.evaluate(test_gen)
@@ -93,7 +93,7 @@ def run_model(sceanrio):
 
     model.summary()
 
-    tf.keras.utils.plot_model(model, show_shapes=True)
+    # tf.keras.utils.plot_model(model, show_shapes=True)
 
     plt.plot(history.history["loss"])
     plt.plot(history.history["val_loss"])
@@ -102,4 +102,6 @@ def run_model(sceanrio):
     plt.title(f"{sceanrio}")
     plt.legend()
     plt.show()
-    plt.savefig(f"/locdisk/data/hoseung2/model/{sceanrio}_cnn.h5.png")
+    plt.savefig(f"/locdisk/data/hoseung2/model/{sceanrio}_cnn.png")
+    print(f"end! {sceanrio}")
+    print(f"end! {sceanrio}")
